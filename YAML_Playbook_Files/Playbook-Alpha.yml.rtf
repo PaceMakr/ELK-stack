@@ -1,0 +1,49 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 AndaleMono;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c100000\c99985;\cssrgb\c0\c1\c1;}
+\margl1440\margr1440\vieww25400\viewh14080\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \CocoaLigature0 ---\
+  - name: Playbook Alpha\
+    hosts: webservers\
+    become: true\
+    tasks:\
+\
+    - name: Install docker.io\
+      apt:\
+        force_apt_get: yes\
+        update_cache: yes\
+        name: docker.io\
+        state: present\
+\
+    - name: Install pip3\
+      apt:\
+        force_apt_get: yes\
+        name: python3-pip\
+        state: present\
+\
+    - name: Install docker python module\
+      apt:\
+        name: docker\
+        state: present\
+\
+    - name: Install Docker using pip\
+      pip:\
+        name: docker\
+        state: present\
+\
+    - name: download and launch a docker web container\
+      docker_container:\
+        name: dvwa\
+        image: cyberxsecurity/dvwa\
+        state: started\
+        restart_policy: always\
+        published_ports: 80:80\
+\
+    - name: Check if service is running and restart if stopped\
+      systemd:\
+        name: docker\
+        enabled: yes\
+}
